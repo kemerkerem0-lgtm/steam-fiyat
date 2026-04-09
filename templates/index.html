@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Fırsat Takipçisi</title>
+    <style>
+        :root { --steam-dark: #171a21; --steam-blue: #1b2838; --steam-light: #66c0f4; --discount-green: #a3d200; }
+        body { background: var(--steam-dark); color: white; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; }
+        
+        header { 
+            background: linear-gradient(to right, #1b2838, #2a475e);
+            padding: 40px 20px; text-align: center; border-bottom: 3px solid var(--steam-light);
+        }
+        
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+
+        /* REKLAM ALANI */
+        .reklam-banner {
+            background: #2a475e; border: 1px dashed var(--steam-light);
+            padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 30px;
+        }
+
+        /* OYUN KARTLARI */
+        .firsat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        
+        .card { 
+            background: var(--steam-blue); border-radius: 4px; overflow: hidden;
+            transition: transform 0.2s; border-bottom: 3px solid transparent;
+        }
+        .card:hover { transform: scale(1.02); border-color: var(--steam-light); }
+        
+        .img-container { position: relative; }
+        .discount-tag {
+            position: absolute; bottom: 10px; right: 10px;
+            background: var(--discount-green); color: #4c6b22;
+            padding: 5px 10px; font-weight: bold; font-size: 24px;
+        }
+
+        .card-info { padding: 15px; }
+        .price-box { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .old-price { color: #888; text-decoration: line-through; font-size: 14px; }
+        .new-price { color: var(--discount-green); font-size: 22px; font-weight: bold; }
+
+        .btn-buy {
+            display: block; width: 100%; text-align: center; background: #21323d;
+            color: var(--steam-light); text-decoration: none; padding: 12px;
+            margin-top: 15px; border-radius: 2px; font-weight: bold;
+        }
+        .btn-buy:hover { background: var(--steam-light); color: white; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="margin:0; font-size: 36px; letter-spacing: 2px;">KEREMTECH STEAM DEALS</h1>
+    <p style="color: var(--steam-light);">Anlık ve Gerçek Zamanlı Oyun İndirimleri</p>
+</header>
+
+<div class="container">
+    
+    <div class="reklam-banner">
+        <small style="color: #888;">REKLAM</small>
+        <h3 style="margin: 5px 0;">🎮 Kendi Oyununu Tasarla! Unity Eğitimleri Başladı</h3>
+    </div>
+
+    <div class="firsat-grid">
+        {% for oyun in firsatlar %}
+        <div class="card">
+            <div class="img-container">
+                <img src="{{ oyun.resim }}" alt="{{ oyun.ad }}" style="width: 100%;">
+                <div class="discount-tag">-%{{ oyun.indirim }}</div>
+            </div>
+            <div class="card-info">
+                <h3 style="margin: 0; font-size: 18px; height: 50px; overflow: hidden;">{{ oyun.ad }}</h3>
+                <div class="price-box">
+                    {% if oyun.eski_fiyat %}
+                    <span class="old-price">{{ oyun.eski_fiyat }}</span>
+                    {% endif %}
+                    <span class="new-price">{{ oyun.yeni_fiyat }}</span>
+                </div>
+                <a href="{{ oyun.link }}" target="_blank" class="btn-buy">SAYFAYA GİT</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+</body>
+</html>
